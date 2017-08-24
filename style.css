@@ -1,0 +1,73 @@
+h1 {
+    text-align: center;
+    color: black;
+    font-size: 48px;
+  }
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+button {
+     position: fixed;
+     font-size: 24px;
+     left: 50px;
+     background-color: dodgerblue;
+     color: white;
+     padding: 5px;
+     margin: 5px;
+  
+}
+
+#intro_btn {
+  top: 140px;
+}
+
+#sibsp_btn {
+  top: 200px;
+}
+#parch_btn {
+  top: 260px;
+}
+#pclass_btn {
+  top: 320px;
+}
+#embarked_btn {
+  top: 380px;
+}
+
+#introduction  {
+     position: fixed;
+     font-size: 24px;
+    /* left: 300px;
+     right: 200px;
+     top: 200px;
+     background-color: dodgerblue;
+     width: 800;*/
+     color: black;
+     padding: 25px;
+     /*margin: 5px;*/
+     line-break: strict;
+}
+
+/*.box {
+  font: 10px sans-serif;
+  background-position: 80% center;
+}
+
+.box line,
+.box rect,
+.box circle {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.box .center {
+  stroke-dasharray: 3,3;
+}
+
+.box .outlier {
+  fill: none;
+  stroke: #ccc;
+}*/
