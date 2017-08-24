@@ -3,273 +3,330 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="style.css">
 <h1>
-Survived VS Died of Titanic Passenger Data
+Survived VS Perished of Titanic Passenger Data
 </h1>
+
 </head>
 <body>
 
 <!-- buttons -->
-<button id='intro_btn'>Introduction</button>
-<button id='pclass_btn'>Pclass</button>
-<button id='embarked_btn'>Embarked</button>
-<button id='sibsp_btn'>Sibsp</button>
-<button id='parch_btn'>Parch</button>
 
-<svg id = 'groupchart'></svg>  
-<svg id = 'introduction'></svg>         
+<button id = 'P-S-C_btn'>PClass-Survived-Count</button>
+<button id = 'P-S-P_btn'>PClass-Survived-Percentage</button>
 
+<button id = 'S-S-C_btn'>Sex-Survived-Count</button>
+<button id = 'S-S-P_btn'>Sex-Survived-Percentage</button>
+
+<button id = 'S-P-C_btn'>Sex-Pclass-Count</button>
+<button id = 'S-P-P_btn'>Sex-Pclass-Percentage</button>
+
+
+<svg id = 'chart_svg'></svg>     
+<div>
+<h2>Summary</h2>
+<p>
+The higher the passenger class, the greater the survival rate is. (Consider passenger class 1 is the highest). 
+The survival rate of female is much higher than male’s.
+The high survival rate of female is associated with the fact that a greater proportion of female chose higher passenger class compared to male.
+</p>
+</div>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script>
 
-function draw(titanic_data)
-{
-
-    function intro(){
-      var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 800 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
-      var svg_intro = d3.select('#introduction')
-                        .attr('width', width)
-                       .attr('height',height)
-                       .attr('transform', 'translate(40,50)');
-                      
-
-      var intro_line1 = 'The well-known Titanic tragedy happened in 1912, with',  intro_line2 = '1502 out of 2224 passengers were killed in the accident. ',  intro_line3 = 'This page creates visualization on titanic dataset of 891 ',  intro_line4 = 'passengers. The number of survived and died varies on     ',  intro_line5 = 'different variables like, port of embarkation, ticket    ',  intro_line6 = 'class, etc. By clicking the menu on the left side of the  ',  intro_line7 = 'page, you can get a visualization of these differences.',
-          intro_line8 = '',
-          intro_line9 = 'Variable Definition:',
-          intro_line10 = 'Sibsp: # of siblings / spouses aboard the Titanic',
-          intro_line11 = 'Parch: # of parents / children aboard the Titanic',
-          intro_line12 = 'Pclass: Ticket class',
-          intro_line13 = 'Embarked: Port of Embarkation';
-
-      var intro = [intro_line1, intro_line2, intro_line3, intro_line4,
-                   intro_line5, intro_line6, intro_line7, intro_line8,
-                   intro_line9, intro_line10, intro_line11, intro_line12,
-                   intro_line13]
-
-      function add_text_tointro(text_info, dy){
-        svg_intro.append('text')
-        .append('tspan')
-        .attr('x',50)
-        .attr('dy', dy)
-        .text(text_info);
-      }
-      
-
-      for(var i = 0; i < (intro.length); i ++) {
-        temp = i * 1.2;
-        add_text_tointro(intro[i], (temp.toString()+'em'));
-      }
-
-   
-    }
-
-  // intro();
+function draw(titanic_data){
 
 
-  d3.select('#intro_btn')
-    .on("click", function() {
-                    d3.selectAll('svg').remove();
-                    d3.select('body').append('svg').attr('id','groupchart');
-                    d3.select('body').append('svg').attr('id','introduction');
-                    intro();
-                  });
-
-
-
-  d3.select('#pclass_btn')
-    .on("click", function() {
-                    d3.selectAll('svg').remove();
-                    d3.select('body').append('svg').attr('id','groupchart');
-                    d3.select('body').append('svg').attr('id','introduction');
-                    groupplot('Pclass');
-                    });
-  d3.select('#embarked_btn')
-  .on("click", function() {
-                    d3.selectAll('svg').remove();
-                    d3.select('body').append('svg').attr('id','groupchart');
-                    d3.select('body').append('svg').attr('id','introduction');
-                    groupplot('Embarked');
+	 d3.select('#P-S-C_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data, 'Count', 'Pclass', 'Survived');
                     });
 
-  d3.select('#sibsp_btn')
-   .on("click", function() {
-                    d3.selectAll("svg").remove();
-                    d3.select('body').append('svg').attr('id','groupchart');
-                    d3.select('body').append('svg').attr('id','introduction');
-                    groupplot('SibSp');
-                  });
+      d3.select('#P-S-P_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data, 'Percentage', 'Pclass','Survived');
+                    });
+       d3.select('#S-P-C_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data, 'Count','Sex', 'Pclass');
+                    });
+       d3.select('#S-P-P_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data,'Percentage', 'Sex', 'Pclass');
+                    });
+       d3.select('#S-S-C_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data, 'Count','Sex', 'Survived');
+                    });
+       d3.select('#S-S-P_btn')
+       .on("click", function() { 
+       draw_barplot(titanic_data, 'Percentage','Sex', 'Survived');
+                    });
 
-  d3.select('#parch_btn')
-  .on("click", function() {
-                    d3.selectAll("svg").remove();
-                    d3.select('body').append('svg').attr('id','groupchart');
-                    d3.select('body').append('svg').attr('id','introduction');
-                    groupplot('Parch');});
-  
 
-  function groupplot(feature_name)
-  {
-   
-    var svg_plot = d3.select("#groupchart")
-            .attr('width', 800)
-            .attr('height', 600)
-            .attr('transform', 'translate(250,20)'),
-    margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = +svg_plot.attr("width") - margin.left - margin.right,
-    height = +svg_plot.attr("height") - margin.top - margin.bottom,
-    g = svg_plot.append("g").attr("transform", "translate(" + margin.left + "," + 
-      margin.top + ")");
 
-    var x0 = d3.scaleBand()
-    .rangeRound([0, width])
-    .paddingInner(0.1);
 
-    var x1 = d3.scaleBand()
-        .padding(0.05);
+	function draw_barplot(titanic_data, charttype, feature_x, feature_y){
+		d3.selectAll('#chart_svg').remove();
+	    d3.select('body').append('svg').attr('id','chart_svg');
 
-    var y = d3.scaleLinear()
-        .rangeRound([height, 0]);
 
-    var z = d3.scaleOrdinal()
-        .range(['#7cfc00', '#dc143c']);
+		// prepare data
+		function agg_feature(leaves) {
 
-    // data_prepare
-    function agg_feature(leaves) {
-            var Survived = d3.sum(leaves, function(d){
-              return d['Survived'];
-            })
-            var Died = leaves.length - Survived;
-
+			var population = leaves.length,
+			feature_x_val = leaves[0][feature_x],
+			feature_y_val = leaves[0][feature_y];
+          
             return {
-              'Survived': Survived,
-              'Died': Died
+              Population: population,
+              feature_x_val: feature_x_val,
+              feature_y_val: feature_y_val
             };
         }
-
-      var nested = d3.nest()
-             .key(function(d) {
-                return d[feature_name];
-             })
-             .rollup(agg_feature)
-             .entries(titanic_data)
-             .sort(function(a, b) {return a.key - b.key;});
-
-      nested.forEach(function(d){
-                if (d.key === '') {d.key = 'Unknown';}
-              });
-
-      
-    var keys = ['Survived', 'Died'];
-  
-      x0.domain(nested.map(function(d) { return d.key; }));
-      x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, d3.max(nested, function(d) { 
-        return d3.max(keys, function(key) { return d.value[key]; }); })]).nice();
+		var nested = d3.nest()
+	         .key(function(d) {
+	            return d[feature_x];
+	          }).sortKeys(d3.ascending)
+	         .key(function(d) {
+	            return d[feature_y];
+	         }).sortKeys(d3.ascending)
+	         .rollup(agg_feature)
+	         .entries(titanic_data);
 
 
-      g.append("g")
+	     nested.forEach(function(d){
+	    		if (d.values.length === 3){
+	    			pclass1 = d.values[0].value['Population'];
+		    		pclass2 = d.values[1].value['Population'];
+		    		pclass3 = d.values[2].value['Population'];
+		    		Total = pclass1+pclass2+pclass3;
+		    		d.values['total'] = Total;		    		
+		         	d.values[0].value['Population'] = [pclass1+pclass2,Total];//pclass3
+		         	d.values[1].value['Population'] = [pclass1,pclass1+pclass2];//pclass2
+		         	d.values[2].value['Population'] = [0,pclass1];//pclass1
+	    		}
+	    		else if(d.values.length === 2){
+	    			var survived = d.values[1].value['Population'];
+		    		var perished = d.values[0].value['Population'];
+		    		var total = survived + perished;	
+		    		d.values['total'] = total;	   
+		         	d.values[0].value['Population'] = [survived,total];//Perished
+		         	d.values[1].value['Population'] = [0,survived];//Survived
+		    
+	    		}	    		
+	         })
+
+	     
+
+	     if (charttype === 'Percentage'){
+	     	nested.forEach(function(d){	
+				var total = d.values['total'];
+     			for (var i = 0;  i < d.values.length; i++){
+     				for (var j = 0; j < 2; j++){
+     					var temp = d.values[i].value['Population'][j];
+     					d.values[i].value['Population'][j] = 100 * temp/total;    					
+     				}
+     			}    			
+	     	})
+	     }
+	     
+  		
+	    //set up svg
+
+	    var margin = {top: 50, right: 470, bottom: 80, left: 90};
+
+	    var plot_svg = d3.select('#chart_svg')
+	    				 .attr('width', 1000)
+            			 .attr('height', 550)
+            			 .attr('transform', 'translate(350,40)'),
+            width = +plot_svg.attr("width") - margin.left - margin.right,
+            height = +plot_svg.attr("height") - margin.top - margin.bottom,
+            g = plot_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            			 
+	    //set up scaler
+	  
+	    var x0 = d3.scaleBand()
+				    .rangeRound([0, width])
+				    .paddingInner(0.1);
+
+        var y = d3.scaleLinear()
+                  .rangeRound([height, 0]);
+
+        if (feature_y === 'Survived'){
+        	var z = d3.scaleOrdinal()
+        		     .range(['crimson', 'lawngreen']),
+        		keys = ['Perished', 'Survived'];
+        }
+        else{
+        	var z = d3.scaleOrdinal()
+        		      .range(['crimson', 'orange', 'lawngreen']),
+        		keys = ['Pclass3', 'Pclass2', 'Pclass1'];
+        }
+
+        x0.domain(nested.map(function(d) { return d.key; }));
+        
+ 
+        y.domain([0, d3.max(nested, function(d){ 
+        								return d.values[0].value['Population'][1];
+        							            })]);
+
+        z.domain(keys);
+
+        //set xaxis and axis
+
+        g.append("g")
+          .attr("class", "axis")
+          .attr('id', 'x_ticks')
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x0))
+          .style('font-size',16);
+       		
+        g.append("g")
+          .attr("class", "axis")
+           .attr('id', 'y_ticks')
+          .call(d3.axisLeft(y).ticks(null, "s"))
+          .style('font-size',16);
+
+         var text_x_label = 'Count'
+
+         if (charttype === 'Percentage')
+         {
+         	text_x_label = 'Percentage(%)';
+         }
+         d3.select('#chart_svg')
+          .append("text")
+          .attr('id', 'x_label')
+          .attr("x", margin.left/2)
+          .attr("y", 20)
+          .attr("dy", "1em")
+          .attr("fill", "#000")
+          .attr("font-weight", "bold")
+          .style("text-anchor", "start")
+          .text(text_x_label)
+          .style('font-size',18);
+
+          d3.select('#chart_svg')
+          .append("text")
+          .attr("x", margin.left + width + 10 )
+          .attr("y", height+ 60)
+          .attr("fill", "#000")
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "start")
+          .text(feature_x)
+          .style('font-size',18);
+
+         d3.select('#chart_svg')
+          .append("text")
+          .attr("x", margin.left+ width/4 )
+          .attr("y", height+ 100)
+          .attr("fill", "#000")
+          .attr("text-anchor", "start")
+          .text('hover the mouse to check data')
+          .style('font-size',16);
+
+
+         //Draw barchart
+        var bar_width = width/(nested.length*2);
+        var offset = +(d3.select('#x_ticks')
+        				 .select('g')
+        				 .attr('transform')
+                    	 .replace('translate','')
+                         .replace('(','')
+                         .replace(')','')
+                         .split(',')[0]) - 0.5*bar_width;
+
+
+        g.append("g")
+        .attr('id','chart_bar')
+        .attr('transform', function() {
+            return "translate(" + offset + ",0)"; })
         .selectAll("g")
         .data(nested)
-        .enter().append("g")
-        .attr('id',feature_name)
+        .enter()
+        .append("g")
         .attr("transform", function(d) { 
             return "translate(" + x0(d.key) + ",0)"; })
         .selectAll("rect")
         .data(function(d) 
           { 
-           return keys.map(function(key) 
-            {        
-              return {key: key, value: d.value[key]}
-            }) 
+           return keys.map(function(key,i) 
+            { 
+             return { XClass: d.key, 
+                      Status: key, 
+                      value: d.values[i].value['Population']};})
+                
           })
         .enter().append("rect")
-          .attr("x", function(d) { return x1(d.key); })
-          .attr("y", function(d) { return y(d.value); })
-          .attr("width", x1.bandwidth())
-          .attr("height", function(d) { return height - y(d.value); })
-          .attr("fill", function(d) { return z(d.key); })
+          .attr("y", function(d) { return y(d.value[1]); })
+          .attr("width", bar_width)
+          .attr("height", function(d) {return y(d.value[0])-y(d.value[1]); })
+          .attr("fill", function(d) { return z(d.Status); })
           .on("mouseover", handleMouseOver)
           .on("mouseout", handleMouseOut);
 
-     // Create Event Handlers for mouse
-      function handleMouseOver(d, i) {  // Add interactivity
-           
+
+         function handleMouseOver(d) {  // Add interactivity
+      
+           // debugger;
             // Specify where to put label of text
-            var pos_g = +(this.parentElement
+
+            //justify a percentage chart
+            var charttype = false;
+            if (this.parentNode.__data__.values[0].value['Population'][1] === 100){
+            	charttype = true;
+            }
+           
+            var pos_x = +(this.parentElement
                     .getAttribute('transform')
                     .replace('translate','')
                     .replace('(','')
                     .replace(')','')
-                    .split(',')[0]),
-                feature_class = d3.select(this.parentElement).data()[0].key,
-                pos_x = (+d3.select(this).attr('x')) + 
-                        (+d3.select(this).attr('width')*1.2),
-                pos_y = (+d3.select(this).attr('y')) +
-                         (+d3.select(this).attr('height')*0.05),
-                feature_name_temp = d3.select(this.parentNode).attr('id');
-                text_line1 = feature_name_temp + ': ' + feature_class,
-                text_line2 = d.key+':'+' '+d.value;
+                    .split(',')[0])+(+this.getAttribute('width')) + 5,
+            	pos_y = 0.1 * (+this.getAttribute('height')) 
+            	             +  (+this.getAttribute('y')),
+                feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0]));
+                text_line1 = 'Feature_x:  '+d.XClass,
+                text_line2 = 'Feature_y:  '+d.Status;
+                if (charttype){
+                	var percent = d.value[1]-d.value[0];
+                	var text_line3 ='Percentage: '+percent.toFixed(2)+'%';
+                }
+                else{
+                	var text_line3 ='Count: '+(d.value[1]-d.value[0]);
+                }
+              
 
-            var text_svg = svg_plot.append('svg')
-                           .attr('id', feature_name_temp+feature_class
-                                       +d.key+d.value+i.toString())
-                           .attr('fill',"black");
-                           
-                          
+            	 var text_svg = d3.select('#chart_bar')
+                             .append('svg')
+                             .attr('id', feature_id)
+                             .attr('x', pos_x)
+                             .attr('y', pos_y)
+                             .attr('border','thick solid #0000FF');
+                                                                        
             function add_to_describe(info, dy){
                text_svg.append('text')
-                           .attr('x', (pos_g + pos_x))
-                           .attr('y', pos_y)
-                           .append('tspan').attr('dy',dy)
+                        .append('tspan')
+                        .attr('dy',dy)
                            .text(info)
-                           .style('font-size','15px');
+                           .style('font-size','10px')
+                           .attr('color','black');
 
             }
+
             add_to_describe(text_line1, '1.2em');
-            add_to_describe(text_line2, '2.4em');     
+            add_to_describe(text_line2, '2.4em');
+            add_to_describe(text_line3, '3.6em'); 
+            text_svg.append('rect').attr('fill','');
+            // debugger;
+
             
           }
-
-      function handleMouseOut(d, i) {
-     
-        var feature_class = d3.select(this.parentElement).data()[0].key,
-            feature_name_temp = d3.select(this.parentNode).attr('id');
-        d3.select(('#'+feature_name_temp+feature_class+d.key+d.value+i.toString())).remove();
+         function handleMouseOut(d) {
+         	var feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0]));
+            d3.select(('#'+feature_id)).remove();          
           }
 
-
-      g.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x0));
-
-      g.append("g")
-          .attr("class", "axis")
-          .call(d3.axisLeft(y).ticks(null, "s"))
-        .append("text")
-          .attr("x", 2)
-          .attr("y", y(y.ticks().pop()) + 0.5)
-          .attr("dy", "0.1em")
-          .attr("fill", "#000")
-          .attr("font-weight", "bold")
-          .attr("text-anchor", "start")
-          .text("Population")
-          .style('font-size',12);
-
-      svg_plot.attr('width', 1600);
-
-
-        g.append("text")
-          .attr("x", x0.range()[1]-10)
-          .attr("y", y.range()[0] + 15)
-          .attr("fill", "#000")
-          .attr("font-weight", "bold")
-          .attr("text-anchor", "start")
-          .text(feature_name)
-          .style('font-size',12);
-
-
+      // draw legend
       var legend = g.append("g")
           .attr("font-family", "sans-serif")
           .attr("font-size", 10)
@@ -278,7 +335,7 @@ function draw(titanic_data)
         .data(keys.reverse())
         .enter().append("g")
           .attr("transform", function(d, i) { 
-            return "translate(50," + i * 30 + ")"; });
+            return "translate(100," + i * 30 + ")"; });
 
     
       legend.append("rect")
@@ -296,9 +353,11 @@ function draw(titanic_data)
           .style('font-size','20px')
           .attr('transform', 'translate(80,0)');
 
-  }
-  groupplot('Embarked');
+	}
+draw_barplot(titanic_data, 'Count', 'Pclass', 'Survived');
 }
+
+
 d3.csv('titanic_data.csv',draw);
 
 </script>

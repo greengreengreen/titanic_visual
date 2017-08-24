@@ -10,7 +10,7 @@ body {
 
 button {
      position: fixed;
-     font-size: 24px;
+     font-size: 18px;
      left: 50px;
      background-color: dodgerblue;
      color: white;
@@ -19,55 +19,49 @@ button {
   
 }
 
-#intro_btn {
-  top: 140px;
+#P-S-C_btn {
+  top: 160px; 
+}
+#P-S-P_btn {
+  top: 220px; 
+}
+#S-S-C_btn {
+  top: 280px;
+}
+#S-S-P_btn {
+  top: 340px;
+}
+#S-P-C_btn {
+  top: 400px;
+}
+#S-P-P_btn {
+  top: 460px;
+}
+div {
+    position: absolute;
+    left: 1100px;
+    right: 100px;
+    top: 200px;
+    border-color: dodgerblue;
+    border-style: solid; 
+	border-top-width: 5px; 
+	border-bottom-width: 5px; 
+	border-left-width: 5px; 
+	border-right-width: 5px; 
+	font-size: 18;
+    
 }
 
-#sibsp_btn {
-  top: 200px;
-}
-#parch_btn {
-  top: 260px;
-}
-#pclass_btn {
-  top: 320px;
-}
-#embarked_btn {
-  top: 380px;
-}
 
-#introduction  {
-     position: fixed;
-     font-size: 24px;
-    /* left: 300px;
-     right: 200px;
-     top: 200px;
-     background-color: dodgerblue;
-     width: 800;*/
-     color: black;
-     padding: 25px;
-     /*margin: 5px;*/
-     line-break: strict;
-}
-
-/*.box {
-  font: 10px sans-serif;
-  background-position: 80% center;
-}
-
-.box line,
-.box rect,
-.box circle {
-  fill: #fff;
-  stroke: #000;
-  stroke-width: 1.5px;
-}
-
-.box .center {
-  stroke-dasharray: 3,3;
-}
-
-.box .outlier {
-  fill: none;
-  stroke: #ccc;
+/*#x_label {
+	writing-mode: tb;
+	font-size: 10;
 }*/
+
+/*svg {
+	width: 2000;
+	height: 1000;
+	background-color: yellow;
+	transform: translate(300px, 80px);
+}*/
+
