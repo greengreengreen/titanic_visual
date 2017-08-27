@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="style.css">
+<meta charset='utf-8'>
+<link rel='stylesheet' href='style.css'>
 <h1>
 Survived VS Perished of Titanic Passenger Data
 </h1>
-
 </head>
 <body>
-
 <!-- buttons -->
-
-<button id = 'P-S-C_btn'>PClass-Survived-Count</button>
-<button id = 'P-S-P_btn'>PClass-Survived-Percentage</button>
-
-<button id = 'S-S-C_btn'>Sex-Survived-Count</button>
-<button id = 'S-S-P_btn'>Sex-Survived-Percentage</button>
-
-<button id = 'S-P-C_btn'>Sex-Pclass-Count</button>
-<button id = 'S-P-P_btn'>Sex-Pclass-Percentage</button>
-
-
+<button id = 'P-S-P_btn'>PClass-Survived</button>
+<button id = 'S-S-P_btn'>Sex-Survived</button>
+<button id = 'S-P-P_btn'>Sex-Pclass</button>
 <svg id = 'chart_svg'></svg>     
 <div>
 <h2>Summary</h2>
@@ -32,246 +22,207 @@ The survival rate of female is much higher than male’s.
 The high survival rate of female is associated with the fact that a greater proportion of female chose higher passenger class compared to male.
 </p>
 </div>
-<script src="//d3js.org/d3.v4.min.js"></script>
+<script src='//d3js.org/d3.v4.min.js'></script>
 <script>
 
 function draw(titanic_data){
 
-
-   d3.select('#P-S-C_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data, 'Count', 'Pclass', 'Survived');
+    d3.select('#P-S-P_btn')
+        .on('click', function() { 
+        draw_barplot(titanic_data, 'Percentage', 'Pclass','Survived');
+                    });   
+    d3.select('#S-P-P_btn')
+        .on('click', function() { 
+        draw_barplot(titanic_data,'Percentage', 'Sex', 'Pclass');
+                    }); 
+    d3.select('#S-S-P_btn')
+        .on('click', function() { 
+        draw_barplot(titanic_data, 'Percentage','Sex', 'Survived');
                     });
 
-      d3.select('#P-S-P_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data, 'Percentage', 'Pclass','Survived');
-                    });
-       d3.select('#S-P-C_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data, 'Count','Sex', 'Pclass');
-                    });
-       d3.select('#S-P-P_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data,'Percentage', 'Sex', 'Pclass');
-                    });
-       d3.select('#S-S-C_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data, 'Count','Sex', 'Survived');
-                    });
-       d3.select('#S-S-P_btn')
-       .on("click", function() { 
-       draw_barplot(titanic_data, 'Percentage','Sex', 'Survived');
-                    });
+    function draw_barplot(titanic_data, charttype, feature_x, feature_y){
+        d3.selectAll('#chart_svg').remove();
+        d3.select('body').append('svg').attr('id','chart_svg');
 
+        // prepare data
+        function agg_feature(leaves) {
 
-
-
-  function draw_barplot(titanic_data, charttype, feature_x, feature_y){
-    d3.selectAll('#chart_svg').remove();
-      d3.select('body').append('svg').attr('id','chart_svg');
-
-
-    // prepare data
-    function agg_feature(leaves) {
-
-      var population = leaves.length,
-      feature_x_val = leaves[0][feature_x],
-      feature_y_val = leaves[0][feature_y];
-          
+            var population = leaves.length,
+            feature_x_val = leaves[0][feature_x],
+            feature_y_val = leaves[0][feature_y];
+              
             return {
               Population: population,
               feature_x_val: feature_x_val,
               feature_y_val: feature_y_val
-            };
-        }
-    var nested = d3.nest()
-           .key(function(d) {
-              return d[feature_x];
-            }).sortKeys(d3.ascending)
-           .key(function(d) {
-              return d[feature_y];
-           }).sortKeys(d3.ascending)
-           .rollup(agg_feature)
-           .entries(titanic_data);
+            };}
 
+        var nested = d3.nest()
+               .key(function(d) {
+                    return d[feature_x];})
+               .sortKeys(d3.ascending)
+               .key(function(d) {
+                    return d[feature_y];})
+               .sortKeys(d3.ascending)
+               .rollup(agg_feature)
+               .entries(titanic_data);
 
-       nested.forEach(function(d){
-          if (d.values.length === 3){
-            pclass1 = d.values[0].value['Population'];
-            pclass2 = d.values[1].value['Population'];
-            pclass3 = d.values[2].value['Population'];
-            Total = pclass1+pclass2+pclass3;
-            d.values['total'] = Total;            
-              d.values[0].value['Population'] = [pclass1+pclass2,Total];//pclass3
-              d.values[1].value['Population'] = [pclass1,pclass1+pclass2];//pclass2
-              d.values[2].value['Population'] = [0,pclass1];//pclass1
-          }
-          else if(d.values.length === 2){
-            var survived = d.values[1].value['Population'];
-            var perished = d.values[0].value['Population'];
-            var total = survived + perished;  
-            d.values['total'] = total;     
-              d.values[0].value['Population'] = [survived,total];//Perished
-              d.values[1].value['Population'] = [0,survived];//Survived
+        nested.forEach(function(d){
+            if (d.values.length === 3){
+                pclass1 = d.values[0].value['Population'];
+                pclass2 = d.values[1].value['Population'];
+                pclass3 = d.values[2].value['Population'];
+                Total = pclass1+pclass2+pclass3;
+                d.values['total'] = Total;            
+                d.values[0].value['Population'] = [pclass1+pclass2,Total];//pclass3
+                d.values[1].value['Population'] = [pclass1,pclass1+pclass2];//pclass2
+                d.values[2].value['Population'] = [0,pclass1];//pclass1
+              }
+            else if(d.values.length === 2){
+                var survived = d.values[1].value['Population'];
+                var perished = d.values[0].value['Population'];
+                var total = survived + perished;  
+                d.values['total'] = total;     
+                d.values[0].value['Population'] = [survived,total];//Perished
+                d.values[1].value['Population'] = [0,survived];//Survived       
+              }         
+               })
+        if (charttype === 'Percentage'){
+            nested.forEach(function(d){ 
+            var total = d.values['total'];
+            for (var i = 0;  i < d.values.length; i++){
+                for (var j = 0; j < 2; j++){
+                    var temp = d.values[i].value['Population'][j];
+                    d.values[i].value['Population'][j] = 100 * temp/total; 
+                }
+              }         
+            })
+           }      
+        //set up svg
+        var margin = {top: 50, right: 470, bottom: 80, left: 90};
+
+        var plot_svg = d3.select('#chart_svg')
+                         .attr('width', 1000)
+                         .attr('height', 550)
+                         .attr('transform', 'translate(350,40)'),
+            width = +plot_svg.attr('width') - margin.left - margin.right,
+            height = +plot_svg.attr('height') - margin.top - margin.bottom,
+            g = plot_svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                       
+          //set up scaler
         
-          }         
-           })
-
-       
-
-       if (charttype === 'Percentage'){
-        nested.forEach(function(d){ 
-        var total = d.values['total'];
-          for (var i = 0;  i < d.values.length; i++){
-            for (var j = 0; j < 2; j++){
-              var temp = d.values[i].value['Population'][j];
-              d.values[i].value['Population'][j] = 100 * temp/total;              
-            }
-          }         
-        })
-       }
-       
-      
-      //set up svg
-
-      var margin = {top: 50, right: 470, bottom: 80, left: 90};
-
-      var plot_svg = d3.select('#chart_svg')
-               .attr('width', 1000)
-                   .attr('height', 550)
-                   .attr('transform', 'translate(350,40)'),
-            width = +plot_svg.attr("width") - margin.left - margin.right,
-            height = +plot_svg.attr("height") - margin.top - margin.bottom,
-            g = plot_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                   
-      //set up scaler
-    
-      var x0 = d3.scaleBand()
-            .rangeRound([0, width])
-            .paddingInner(0.1);
+        var x0 = d3.scaleBand()
+                   .rangeRound([0, width])
+                   .paddingInner(0.1);
 
         var y = d3.scaleLinear()
                   .rangeRound([height, 0]);
 
         if (feature_y === 'Survived'){
-          var z = d3.scaleOrdinal()
-                 .range(['lightpink', 'lightseagreen']),
+            var z = d3.scaleOrdinal()
+                    .range(['lightcoral', 'aquamarine']),
             keys = ['Perished', 'Survived'];
         }
         else{
-          var z = d3.scaleOrdinal()
-                  .range(['moccasin', 'plum', 'slateblue']),
-            keys = ['Pclass3', 'Pclass2', 'Pclass1'];
-        }
+        var z = d3.scaleOrdinal()
+                    .range(['moccasin', 'plum', 'slateblue']),
+            keys = ['Pclass3', 'Pclass2', 'Pclass1'];}
 
-        x0.domain(nested.map(function(d) { return d.key; }));
-        
- 
+        x0.domain(nested.map(function(d) { return d.key; })); 
         y.domain([0, d3.max(nested, function(d){ 
-                        return d.values[0].value['Population'][1];
-                                  })]);
-
+                        return d.values[0].value['Population'][1];})]);
         z.domain(keys);
 
         //set xaxis and axis
-
-        g.append("g")
-          .attr("class", "axis")
+        g.append('g')
+          .attr('class', 'axis')
           .attr('id', 'x_ticks')
-          .attr("transform", "translate(0," + height + ")")
+          .attr('transform', 'translate(0,' + height + ')')
           .call(d3.axisBottom(x0))
           .style('font-size',16);
           
-        g.append("g")
-          .attr("class", "axis")
-           .attr('id', 'y_ticks')
-          .call(d3.axisLeft(y).ticks(null, "s"))
+        g.append('g')
+          .attr('class', 'axis')
+          .attr('id', 'y_ticks')
+          .call(d3.axisLeft(y).ticks(null, 's'))
           .style('font-size',16);
 
-         var text_x_label = 'Count'
+        var text_x_label = 'Count'
 
-         if (charttype === 'Percentage')
-         {
+        if (charttype === 'Percentage')
+        {
           text_x_label = 'Percentage(%)';
-         }
-         d3.select('#chart_svg')
-          .append("text")
+        }
+        d3.select('#chart_svg')
+          .append('text')
           .attr('id', 'x_label')
-          .attr("x", margin.left/2)
-          .attr("y", 20)
-          .attr("dy", "1em")
-          .attr("fill", "#000")
-          .attr("font-weight", "bold")
-          .style("text-anchor", "start")
+          .attr('x', margin.left/2)
+          .attr('y', 20)
+          .attr('dy', '1em')
+          .attr('fill', '#000')
+          .attr('font-weight', 'bold')
+          .style('text-anchor', 'start')
           .text(text_x_label)
           .style('font-size',18);
 
-          d3.select('#chart_svg')
-          .append("text")
-          .attr("x", margin.left + width + 10 )
-          .attr("y", height+ 60)
-          .attr("fill", "#000")
-          .attr("font-weight", "bold")
-          .attr("text-anchor", "start")
+        d3.select('#chart_svg')
+          .append('text')
+          .attr('x', margin.left + width + 10 )
+          .attr('y', height+ 60)
+          .attr('fill', '#000')
+          .attr('font-weight', 'bold')
+          .attr('text-anchor', 'start')
           .text(feature_x)
           .style('font-size',18);
 
-         d3.select('#chart_svg')
-          .append("text")
-          .attr("x", margin.left+ width/4 )
-          .attr("y", height+ 100)
-          .attr("fill", "#000")
-          .attr("text-anchor", "start")
+        d3.select('#chart_svg')
+          .append('text')
+          .attr('x', margin.left+ width/4 )
+          .attr('y', height+ 100)
+          .attr('fill', '#000')
+          .attr('text-anchor', 'start')
           .text('hover the mouse to check data')
           .style('font-size',16);
-
 
          //Draw barchart
         var bar_width = width/(nested.length*2);
         var offset = +(d3.select('#x_ticks')
-                 .select('g')
-                 .attr('transform')
-                       .replace('translate','')
+                         .select('g')
+                         .attr('transform')
+                         .replace('translate','')
                          .replace('(','')
                          .replace(')','')
                          .split(',')[0]) - 0.5*bar_width;
 
 
-        g.append("g")
-        .attr('id','chart_bar')
-        .attr('transform', function() {
-            return "translate(" + offset + ",0)"; })
-        .selectAll("g")
-        .data(nested)
-        .enter()
-        .append("g")
-        .attr("transform", function(d) { 
-            return "translate(" + x0(d.key) + ",0)"; })
-        .selectAll("rect")
-        .data(function(d) 
-          { 
-           return keys.map(function(key,i) 
-            { 
-             return { XClass: d.key, 
-                      Status: key, 
-                      value: d.values[i].value['Population']};})
-                
-          })
-        .enter().append("rect")
-          .attr("y", function(d) { return y(d.value[1]); })
-          .attr("width", bar_width)
-          .attr("height", function(d) {return y(d.value[0])-y(d.value[1]); })
-          .attr("fill", function(d) { return z(d.Status); })
-          .on("mouseover", handleMouseOver)
-          .on("mouseout", handleMouseOut);
+        g.append('g')
+         .attr('id','chart_bar')
+         .attr('transform', function() {
+            return 'translate(' + offset + ',0)'; })
+         .selectAll('g')
+         .data(nested)
+         .enter()
+         .append('g')
+         .attr('transform', function(d) { 
+            return 'translate(' + x0(d.key) + ',0)'; })
+         .selectAll('rect')
+         .data(function(d) { 
+            return keys.map(function(key,i){ 
+                return {XClass: d.key, 
+                        Status: key, 
+                        value: d.values[i].value['Population']};})})
+         .enter().append('rect')
+                 .attr('y', function(d) { return y(d.value[1]); })
+                 .attr('width', bar_width)
+                 .attr('height', function(d) {
+                                 return y(d.value[0])-y(d.value[1]); })
+                 .attr('fill', function(d) {return z(d.Status); })
+                 .on('mouseover', handleMouseOver)
+                 .on('mouseout', handleMouseOut);
 
 
-         function handleMouseOver(d) {  // Add interactivity
-      
-           // debugger;
+        function handleMouseOver(d) {  // Add interactivity        
             // Specify where to put label of text
-
             //justify a percentage chart
             var charttype = false;
             if (this.parentNode.__data__.values[0].value['Population'][1] === 100){
@@ -279,86 +230,81 @@ function draw(titanic_data){
             }
            
             var pos_x = +(this.parentElement
-                    .getAttribute('transform')
-                    .replace('translate','')
-                    .replace('(','')
-                    .replace(')','')
-                    .split(',')[0])+(+this.getAttribute('width')) + 5,
-              pos_y = 0.1 * (+this.getAttribute('height')) 
+                              .getAttribute('transform')
+                              .replace('translate','')
+                              .replace('(','')
+                              .replace(')','')
+                              .split(',')[0])+(+this.getAttribute('width')) + 5,
+                pos_y = 0.1 * (+this.getAttribute('height')) 
                            +  (+this.getAttribute('y')),
-                feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0]));
+                feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0])),
                 text_line1 = 'Feature_x:  '+d.XClass,
                 text_line2 = 'Feature_y:  '+d.Status;
-                if (charttype){
-                  var percent = d.value[1]-d.value[0];
-                  var text_line3 ='Percentage: '+percent.toFixed(2)+'%';
-                }
-                else{
-                  var text_line3 ='Count: '+(d.value[1]-d.value[0]);
-                }
+            if (charttype){
+              var percent = d.value[1]-d.value[0];
+              var text_line3 ='Percentage: '+percent.toFixed(2)+'%';
+            }
+            else{
+              var text_line3 ='Count: '+(d.value[1]-d.value[0]);
+            }
               
 
-               var text_svg = d3.select('#chart_bar')
-                             .append('svg')
-                             .attr('id', feature_id)
-                             .attr('x', pos_x)
-                             .attr('y', pos_y)
-                             .attr('border','thick solid #0000FF');
+           var text_svg = d3.select('#chart_bar')
+                            .append('svg')
+                            .attr('id', feature_id)
+                            .attr('x', pos_x)
+                            .attr('y', pos_y)
+                            .attr('border','thick solid #0000FF');
                                                                         
             function add_to_describe(info, dy){
-               text_svg.append('text')
+                text_svg.append('text')
                         .append('tspan')
                         .attr('dy',dy)
-                           .text(info)
-                           .style('font-size','10px')
-                           .attr('color','black');
+                        .text(info)
+                        .style('font-size','10px')
+                        .attr('color','black');
 
             }
 
             add_to_describe(text_line1, '1.2em');
             add_to_describe(text_line2, '2.4em');
             add_to_describe(text_line3, '3.6em'); 
-            text_svg.append('rect').attr('fill','');
-            // debugger;
-
-            
+            text_svg.append('rect').attr('fill','');            
           }
-         function handleMouseOut(d) {
-          var feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0]));
+        function handleMouseOut(d) {
+            var feature_id = 'text'+d.XClass+d.Status+parseInt((d.value[1]-d.value[0]));
             d3.select(('#'+feature_id)).remove();          
-          }
+        }
 
       // draw legend
-      var legend = g.append("g")
-          .attr("font-family", "sans-serif")
-          .attr("font-size", 10)
-          .attr("text-anchor", "end")
-        .selectAll("g")
-        .data(keys.reverse())
-        .enter().append("g")
-          .attr("transform", function(d, i) { 
-            return "translate(100," + i * 30 + ")"; });
-
+        var legend = g.append('g')
+                      .attr('font-family', 'sans-serif')
+                      .attr('font-size', 10)
+                      .attr('text-anchor', 'end')
+                      .selectAll('g')
+                      .data(keys.reverse())
+                      .enter().append('g')
+                      .attr('transform', function(d, i) { 
+                        return 'translate(100,' + i * 30 + ')'; });
     
-      legend.append("rect")
-          .attr("x", width -28)
-          .attr("width", 28)
-          .attr("height", 28)
-          .attr("fill", z)
-          .attr('transform', 'translate(80,0)');
+        legend.append('rect')
+              .attr('x', width -28)
+              .attr('width', 28)
+              .attr('height', 28)
+              .attr('fill', z)
+              .attr('transform', 'translate(80,0)');
 
-      legend.append("text")
-          .attr("x", width - 30)
-          .attr("y", 14)
-          .attr("dy", "0.32em")
-          .text(function(d) { return d;})
-          .style('font-size','20px')
-          .attr('transform', 'translate(80,0)');
+        legend.append('text')
+              .attr('x', width - 30)
+              .attr('y', 14)
+              .attr('dy', '0.32em')
+              .text(function(d) { return d;})
+              .style('font-size','20px')
+              .attr('transform', 'translate(80,0)');
 
-  }
-draw_barplot(titanic_data, 'Count', 'Pclass', 'Survived');
+    }
+    draw_barplot(titanic_data, 'Percentage', 'Pclass', 'Survived');
 }
-
 
 d3.csv('titanic_data.csv',draw);
 
