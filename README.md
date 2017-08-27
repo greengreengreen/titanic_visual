@@ -7,22 +7,22 @@ the high survival rate of female is associated with the fact that a greater prop
 
 ## Design
 ### Version1 (index1.html)
-My initial intention was to visualize how survival rate varies on different variables, especially on the four variables: 'Sibsp', 'Parch', 'Pclass', 'Embarked'. In order to help readers distinguish the numbers of survived and perished passengers, I decided to use group bar charts to show survived and perished number for each value of one variable. I set 'Survived' as y-axis so that readers can easily compare the numbers of passengers through heights of the bar charts. Since it's more natural for people to relate green with life and red with death, I set 'Survived' as color green and 'Perished' as red in 'Survived' variable.
+My initial intention was to visualize how survival rate varies on different variables, especially on the four variables: 'Sibsp', 'Parch', 'Pclass', 'Embarked'. In order to help readers distinguish the numbers of survived and perished passengers, I decided to use group bar charts to show survived and perished number for each value of one variable. I set 'Survived' variable as y-axis so that readers can easily compare the numbers of passengers through heights of the bar charts. Since it's more natural for people to relate green with life and red with death, I set 'Survived' as color green and 'Perished' as red in 'Survived' variable.
 
 ### Version2 (index2.html)
 I later realized that I did not put emphasis on my first version. Version 1 told that survival rate differs on various values of variables. Also, referring to my first feedback, I think I need to focus on telling one story. 
 Therfore, I decided to visualize how survival rate differs on 'Sex' and the reason behind it.
 I already knew that a greater proportion of female chose higher passenger class, which had higher survival rate.
 My specific goal was to visualize the relationships I knew and convey the message that women's choice on passenger class also contributed to their high survival rate.
-Instead of using group bar charts, I applied stacked bar charts, where I put 'Survived' under 'Perished' so that survival rate could be represented by the green color of 'Survived'. I also added buttons for readers to switch the form of survival: Count/Percetage.
-To illustrate the story, I created a third plot on 'Sex' and 'Pclass', aiming to show that a greater proportion of women were higher class passengers. By putting higher passenger class lower in the bar charts, the proportions of people who chose higher class in female and male are easier to be compared.  
+Instead of using group bar charts, I applied stacked bar charts and set 'Survival' variable as y-axis where I put 'Survived' under 'Perished' so that survival rate could be represented by the green color of 'Survived'. I also added buttons for readers to switch the form of survival: Count/Percetage.
+To illustrate the story, I created a third stacked chart on 'Sex' and 'Pclass', aiming to show that a greater proportion of women were higher class passengers. By setting 'Pclass' as y-axis and putting higher passenger class lower in the bar charts, the chart made the proportions of people who chose higher class in female and male easier to be compared. For 'Pclass' in the third plot, I set color 'moccasin', 'plum' and 'slateblue' to indicate class1, 2 and 3.
 
-### Version3(Commit: Add_color+intro)
+### Version3(index3.html)
 Referring to the second and third feedback I collected, I add more details to introduce the dataset.
 And I adjusted the color to be calmer and used different color indicating different variables so that readers will not get confused.
 
-### Final Version(Commit: Changed color and code format)
-I removed the count part of the plots, leaving only percentage charts so that readers could explore my outcome more easily. Also I applied different colors for the buttons on the left to distinguish different plots it's linked.
+### Final Version(index_final.html)
+I removed the count part of the plots, leaving only percentage charts so that readers could explore my outcome more easily. Also I applied different colors for the buttons on the left to distinguish different plots they are linked.
 
 ## Feedback
 1. From udacity discussion(On the first version index1.html):
