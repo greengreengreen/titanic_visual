@@ -6,30 +6,23 @@ The survival rate of female is much higher than male’s. Apart from the princip
 the high survival rate of female is associated with the fact that a greater proportion of female chose higher passenger class compared to male.
 
 ## Design
-### Version1 (Commit: Survival_rate_on_4_)
+### Version1 (index1.html)
+My initial intention was to visualize how survival rate varies on different variables, especially on the four variables: 'Sibsp', 'Parch', 'Pclass', 'Embarked'. In order to help readers distinguish the numbers of survived and perished passengers, I decided to use group bar charts to show survived and perished number for each value of one variable. I set 'Survived' as y-axis so that readers can easily compare the numbers of passengers through heights of the bar charts. Since it's more natural for people to relate green with life and red with death, I set 'Survived' as color green and 'Perished' as red in 'Survived' variable.
 
-
-At first, I was going to create a visualization that shows survival rate on 4 variables: 'Sibsp', 'Parch', 'Pclass', 'Embarked'. 
-And I added interaction so that the user could switch the variable he or she want to comapare survival rates. 
-
-### Version2 (Commit: Survival_rate_on_pclass_sex)
-
-However, there's no emphasis on my first version. 
-Refer to my first feedback, I realized that I need to tell only one story with nice plots that are easy to understand.
-Therfore, I focused on variable 'Pclass', 'Sex'. 
-The higher the passenger class was, the higher survival rate was.
-It is very likely that higher passenger class provides more safety facilities.
-Female has much higher survival rate than male.
-The much higher survival rate in female is probably associated with pclass.
-To dig whether or not these two variables are related on survival rate, 
-I created the third plot on how female and male choose different passenger class. 
+### Version2 (index2.html)
+I later realized that I did not put emphasis on my first version. Version 1 told that survival rate differs on various values of variables. Also, referring to my first feedback, I think I need to focus on telling one story. 
+Therfore, I decided to visualize how survival rate differs on 'Sex' and the reason behind it.
+I already knew that a greater proportion of female chose higher passenger class, which had higher survival rate.
+My specific goal was to visualize the relationships I knew and convey the message that women's choice on passenger class also contributed to their high survival rate.
+Instead of using group bar charts, I applied stacked bar charts, where I put 'Survived' under 'Perished' so that survival rate could be represented by the green color of 'Survived'. I also added buttons for readers to switch the form of survival: Count/Percetage.
+To illustrate the story, I created a third plot on 'Sex' and 'Pclass', aiming to show that a greater proportion of women were higher class passengers. By putting higher passenger class lower in the bar charts, the proportions of people who chose higher class in female and male are easier to be compared.  
 
 ### Version3(Commit: Add_color+intro)
 Referring to the second and third feedback I collected, I add more details to introduce the dataset.
-And I adjusted the color to be brighter and used different color indicating different variables.
+And I adjusted the color to be calmer and used different color indicating different variables so that readers will not get confused.
 
 ### Final Version(Commit: Changed color and code format)
-I removed the count part of the plots, leaving only percentage charts so that readers could explore my outcome more easily. Also I applied different colors for the buttons on the left.
+I removed the count part of the plots, leaving only percentage charts so that readers could explore my outcome more easily. Also I applied different colors for the buttons on the left to distinguish different plots it's linked.
 
 ## Feedback
 1. From udacity discussion(On the first version index1.html):
