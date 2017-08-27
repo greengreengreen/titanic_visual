@@ -24,9 +24,12 @@ The much higher survival rate in female is probably associated with pclass.
 To dig whether or not these two variables are related on survival rate, 
 I created the third plot on how female and male choose different passenger class. 
 
-### Final version(Commit: add_color+intro)
+### Version3(Commit: Add_color+intro)
 Referring to the second and third feedback I collected, I add more details to introduce the dataset.
 And I adjusted the color to be brighter and used different color indicating different variables.
+
+### Final Version(Commit: Changed color and code format)
+I removed the count part of the plots, leaving only percentage charts so that readers could explore my outcome more easily. Also I applied different colors for the buttons on the left.
 
 ## Feedback
 1. From udacity discussion(On the first version index1.html):
