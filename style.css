@@ -10,40 +10,36 @@ body {
 
 button {
      position: fixed;
-     font-size: 18px;
+     font-size: 20px;
      left: 50px;
-     background-color: dodgerblue;
-     color: white;
+     color: black;
      padding: 5px;
      margin: 5px;
   
 }
 
-#P-S-C_btn {
-  top: 160px; 
-}
+
 #P-S-P_btn {
   top: 220px; 
+  background-color:lightpink;
 }
-#S-S-C_btn {
-  top: 280px;
-}
+
 #S-S-P_btn {
   top: 340px;
+  background-color:lightgreen;
 }
-#S-P-C_btn {
-  top: 400px;
-}
+
 #S-P-P_btn {
   top: 460px;
+  background-color:lightskyblue;
 }
 div {
-    position: absolute;
-    left: 1100px;
-    right: 100px;
-    top: 200px;
-    border-color: dodgerblue;
-    border-style: solid; 
+  position: absolute;
+  left: 1100px;
+  right: 100px;
+  top: 200px;
+  border-color: dodgerblue;
+  border-style: solid; 
 	border-top-width: 5px; 
 	border-bottom-width: 5px; 
 	border-left-width: 5px; 
@@ -52,16 +48,4 @@ div {
     
 }
 
-
-/*#x_label {
-	writing-mode: tb;
-	font-size: 10;
-}*/
-
-/*svg {
-	width: 2000;
-	height: 1000;
-	background-color: yellow;
-	transform: translate(300px, 80px);
-}*/
 
